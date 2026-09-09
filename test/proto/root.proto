@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package example;
+
+import "models/entity.proto";
+import "importer/importer_record.proto";
+import "sqlmodel_extensions.proto";
+import "google/protobuf/timestamp.proto";
+
+message ProcessingBatch {
+  option (example.sqlmodel.table) = true;
+
+  string batch_id = 1;
+
+  example.models.Entity root_entity = 2;
+  repeated example.importer.ImportedRecord records = 3;
+
+  google.protobuf.Timestamp started_at = 4;
+  google.protobuf.Timestamp completed_at = 5;
+
+  BatchStatus status = 6;
+
+  map<string, string> options = 7 [
+    (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+  ];
+
+  oneof outcome {
+    BatchSuccess success = 8;
+    BatchFailure failure = 9;
+  }
+}
+
+enum BatchStatus {
+  BATCH_STATUS_UNSPECIFIED = 0;
+  BATCH_STATUS_CREATED = 1;
+  BATCH_STATUS_PROCESSING = 2;
+  BATCH_STATUS_COMPLETED = 3;
+  BATCH_STATUS_FAILED = 4;
+}
+
+message BatchSuccess {
+  uint32 processed_count = 1;
+  uint32 skipped_count = 2;
+  repeated string warnings = 3;
+}
+
+message BatchFailure {
+  string error_code = 1;
+  string error_message = 2;
+  repeated string failed_import_ids = 3;
+}

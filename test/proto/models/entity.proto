@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package example.models;
+
+import public "google/protobuf/timestamp.proto";
+import "sqlmodel_extensions.proto";
+
+message Entity {
+  option (example.sqlmodel.table) = true;
+
+  string id = 1;
+  string display_name = 2;
+  bool enabled = 3;
+  int32 priority = 4;
+  int64 revision = 5;
+  double score = 6;
+  bytes raw_data = 7;
+
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+
+  Status status = 10;
+
+  repeated string aliases = 11;
+  repeated Tag tags = 12;
+  repeated Entity children = 13;
+
+  // Maps default to dictionary-like types, but this field is stored as JSON.
+  map<string, string> labels = 14 [
+    (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+  ];
+
+  map<string, Attribute> attributes = 15 [
+    (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+  ];
+
+  Metadata metadata = 16;
+  Visibility visibility = 17;
+
+  oneof identity {
+    string username = 18;
+    string email = 19;
+    ExternalIdentity external_identity = 20;
+  }
+
+  optional string description = 21;
+
+  oneof configuration {
+    DatabaseConfig database = 22;
+    HttpConfig http = 23;
+  }
+
+  enum Visibility {
+    VISIBILITY_UNSPECIFIED = 0;
+    VISIBILITY_PRIVATE = 1;
+    VISIBILITY_INTERNAL = 2;
+    VISIBILITY_PUBLIC = 3;
+  }
+
+  message Metadata {
+    string owner = 1;
+    string source = 2;
+    repeated Status statuses = 3;
+
+    map<string, string> annotations = 4 [
+      (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+    ];
+
+    message AuditInfo {
+      string actor = 1;
+      google.protobuf.Timestamp timestamp = 2;
+      string operation = 3;
+    }
+
+    AuditInfo last_audit = 5;
+  }
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_ACTIVE = 1;
+  STATUS_INACTIVE = 2;
+  STATUS_ARCHIVED = 3;
+}
+
+message Tag {
+  string key = 1;
+  string value = 2;
+}
+
+message Attribute {
+  string name = 1;
+
+  oneof value {
+    string string_value = 2;
+    int64 integer_value = 3;
+    double decimal_value = 4;
+    bool boolean_value = 5;
+    bytes binary_value = 6;
+  }
+}
+
+message ExternalIdentity {
+  string provider = 1;
+  string subject = 2;
+
+  map<string, string> claims = 3 [
+    (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+  ];
+}
+
+message DatabaseConfig {
+  string host = 1;
+  uint32 port = 2;
+  string database_name = 3;
+  string username = 4;
+  optional string password = 5;
+  bool tls_enabled = 6;
+}
+
+message HttpConfig {
+  string base_url = 1;
+
+  map<string, Status> headers = 2 [
+    (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+  ];
+
+  uint32 timeout_seconds = 3;
+  bool follow_redirects = 4;
+}

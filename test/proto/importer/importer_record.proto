@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package example.importer;
+
+import "models/entity.proto";
+import "sqlmodel_extensions.proto";
+import "google/protobuf/timestamp.proto";
+
+message ImportedRecord {
+  option (example.sqlmodel.table) = true;
+
+  string import_id = 1;
+  string source_file = 2;
+
+  example.models.Entity entity = 3;
+  google.protobuf.Timestamp imported_at = 4;
+  ImportStatus status = 5;
+
+  repeated example.models.Tag source_tags = 6;
+
+  map<string, string> import_metadata = 7 [
+    (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+  ];
+
+  oneof result {
+    ImportSuccess success = 8;
+    ImportFailure failure = 9;
+  }
+}
+
+enum ImportStatus {
+  IMPORT_STATUS_UNSPECIFIED = 0;
+  IMPORT_STATUS_PENDING = 1;
+  IMPORT_STATUS_SUCCEEDED = 2;
+  IMPORT_STATUS_FAILED = 3;
+}
+
+message ImportSuccess {
+  uint32 records_created = 1;
+  uint32 records_updated = 2;
+  repeated string warnings = 3;
+}
+
+message ImportFailure {
+  string error_code = 1;
+  string error_message = 2;
+  repeated string details = 3;
+}

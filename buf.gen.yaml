@@ -1,0 +1,6 @@
+version: v2
+inputs:
+  - directory: test/proto
+plugins:
+  - local: protoc-gen-sqlmodel
+    out: test/gen

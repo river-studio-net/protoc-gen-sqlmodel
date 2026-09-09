@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package example.sqlmodel;
+
+import "google/protobuf/descriptor.proto";
+
+// Marks a protobuf message as a SQLModel table.
+extend google.protobuf.MessageOptions {
+  bool table = 50001;
+}
+
+// Overrides the default protobuf-to-SQLModel field conversion.
+extend google.protobuf.FieldOptions {
+  string sqlmodel_type = 50002;
+}

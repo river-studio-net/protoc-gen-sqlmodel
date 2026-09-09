@@ -1,0 +1,22 @@
+[project]
+name = "protoc-gen-sqlmodel"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "river-studio-main", email = "62842368+river-studio-main@users.noreply.github.com" },
+]
+requires-python = ">=3.14"
+dependencies = [
+    "logging>=0.4.9.6",
+    "protobuf-py>=0.4.0",
+    "protoc-gen-py>=0.4.0",
+    "sqlmodel>=0.0.42",
+]
+
+[project.scripts]
+protoc-gen-sqlmodel = "protoc_gen_sqlmodel:main"
+
+[build-system]
+requires = ["uv_build>=0.12.7,<0.13.0"]
+build-backend = "uv_build"
