@@ -10,7 +10,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Literal
 
-from sqlmodel import SQLModel
+from sqlmodel import Field, SQLModel
 
 from .importer.importer_record_sqlmodel import ImportedRecord
 from .models.entity_sqlmodel import Entity
@@ -30,7 +30,7 @@ class ProcessingBatch(SQLModel, table=True):
     started_at: datetime | None 
     completed_at: datetime | None 
     status: BatchStatus
-    options: dict[str, str]
+    options: dict[str, str] = Field(sa_type=Ident(name='JSON', module=Module(path='sqlalchemy'), type_only=False))
     success: BatchSuccess | None 
     failure: BatchFailure | None 
     # oneof outcome

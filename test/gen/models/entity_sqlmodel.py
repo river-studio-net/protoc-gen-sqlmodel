@@ -10,7 +10,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Literal
 
-from sqlmodel import SQLModel
+from sqlmodel import Field, SQLModel
 
 
 class Status(Enum, int):
@@ -35,7 +35,7 @@ class Entity(SQLModel, table=True):
         owner: str
         source: str
         statuses: list[Status]
-        annotations: dict[str, str]
+        annotations: dict[str, str] = Field(sa_type=Ident(name='JSON', module=Module(path='sqlalchemy'), type_only=False))
         last_audit: AuditInfo | None 
 
     id: str
@@ -51,8 +51,8 @@ class Entity(SQLModel, table=True):
     aliases: list[str]
     tags: list[Tag]
     children: list[Entity]
-    labels: dict[str, str]
-    attributes: dict[str, Attribute]
+    labels: dict[str, str] = Field(sa_type=Ident(name='JSON', module=Module(path='sqlalchemy'), type_only=False))
+    attributes: dict[str, Attribute] = Field(sa_type=Ident(name='JSON', module=Module(path='sqlalchemy'), type_only=False))
     metadata: Metadata | None 
     visibility: Visibility
     username: str | None 
@@ -99,7 +99,7 @@ class Attribute(SQLModel):
 class ExternalIdentity(SQLModel):
     provider: str
     subject: str
-    claims: dict[str, str]
+    claims: dict[str, str] = Field(sa_type=Ident(name='JSON', module=Module(path='sqlalchemy'), type_only=False))
 
 
 class DatabaseConfig(SQLModel):
@@ -113,6 +113,6 @@ class DatabaseConfig(SQLModel):
 
 class HttpConfig(SQLModel):
     base_url: str
-    headers: dict[str, Status]
+    headers: dict[str, Status] = Field(sa_type=Ident(name='JSON', module=Module(path='sqlalchemy'), type_only=False))
     timeout_seconds: int
     follow_redirects: bool

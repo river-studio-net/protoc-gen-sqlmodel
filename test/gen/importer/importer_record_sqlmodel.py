@@ -10,7 +10,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Literal
 
-from sqlmodel import SQLModel
+from sqlmodel import Field, SQLModel
 
 from ..models.entity_sqlmodel import Entity, Tag
 
@@ -28,7 +28,7 @@ class ImportedRecord(SQLModel, table=True):
     imported_at: datetime | None 
     status: ImportStatus
     source_tags: list[Tag]
-    import_metadata: dict[str, str]
+    import_metadata: dict[str, str] = Field(sa_type=Ident(name='JSON', module=Module(path='sqlalchemy'), type_only=False))
     success: ImportSuccess | None 
     failure: ImportFailure | None 
     # oneof result

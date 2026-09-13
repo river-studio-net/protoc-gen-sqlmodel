@@ -71,7 +71,17 @@ def handle_import_desc(element: DescEnum | DescMessage):
     return Module.for_desc(element.file, "_sqlmodel").ident(element.name)
 
 
-def handle_import_str(type_name: str): ...
+def handle_python_ref_str(type_name: str):
+    match type_name:
+        case "true" | "True":
+            return "True"
+        case "false" | "False":
+            return "False"
+        case s if "." in s:
+            parts = s.split(".")
+            object_name = parts.pop(-1)
+            object_package = ".".join(parts)
+            return Module(object_package).ident(object_name)
 
 
 def handle_extension(desc: DescExtension, f: File):
