@@ -121,18 +121,9 @@ extend google.protobuf.FieldOptions { optional string server_default = 50015 [js
 ```
 """
 
-ext_pg_uuid7: Final[Extension[FieldOptions, str]] = Extension()
-"""
-special plugin feature to set up a uuid7 column
-
-```proto
-extend google.protobuf.FieldOptions { optional string pg_uuid7 = 50016 [json_name = "[example.sqlmodel.pg_uuid7]"] }
-```
-"""
-
 
 _DESC = file_desc(
-    b'\n\x19sqlmodel_extensions.proto\x12\x10example.sqlmodel\x1a google/protobuf/descriptor.proto:7\n\x05table\x18\xd1\x86\x03 \x01(\x08\x12\x1f.google.protobuf.MessageOptionsR\x05table:8\n\x07sa_type\x18\xd2\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x06saType:@\n\x0bprimary_key\x18\xd3\x86\x03 \x01(\x08\x12\x1d.google.protobuf.FieldOptionsR\nprimaryKey:J\n\x10sqlmodel_default\x18\xd4\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x0fsqlmodelDefault:Y\n\x18sqlmodel_default_factory\x18\xd5\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x16sqlmodelDefaultFactory:>\n\npy_default\x18\xd6\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\tpyDefault:5\n\x05index\x18\xd7\x86\x03 \x01(\x08\x12\x1d.google.protobuf.FieldOptionsR\x05index:@\n\x0bforeign_key\x18\xd8\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\nforeignKey:C\n\x0crelationship\x18\xd9\x86\x03 \x01(\x08\x12\x1d.google.protobuf.FieldOptionsR\x0crelationship:F\n\x0eback_populates\x18\xda\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\rbackPopulates:F\n\x0ecascade_delete\x18\xdb\x86\x03 \x01(\x08\x12\x1d.google.protobuf.FieldOptionsR\rcascadeDelete:<\n\ton_delete\x18\xdc\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x08onDelete:H\n\x0fpassive_deletes\x18\xdd\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x0epassiveDeletes:>\n\nlink_model\x18\xde\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\tlinkModel:F\n\x0eserver_default\x18\xdf\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\rserverDefault::\n\x08pg_uuid7\x18\xe0\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x07pgUuid7b\x06proto3',
+    b'\n\x19sqlmodel_extensions.proto\x12\x10example.sqlmodel\x1a google/protobuf/descriptor.proto:7\n\x05table\x18\xd1\x86\x03 \x01(\x08\x12\x1f.google.protobuf.MessageOptionsR\x05table:8\n\x07sa_type\x18\xd2\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x06saType:@\n\x0bprimary_key\x18\xd3\x86\x03 \x01(\x08\x12\x1d.google.protobuf.FieldOptionsR\nprimaryKey:J\n\x10sqlmodel_default\x18\xd4\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x0fsqlmodelDefault:Y\n\x18sqlmodel_default_factory\x18\xd5\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x16sqlmodelDefaultFactory:>\n\npy_default\x18\xd6\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\tpyDefault:5\n\x05index\x18\xd7\x86\x03 \x01(\x08\x12\x1d.google.protobuf.FieldOptionsR\x05index:@\n\x0bforeign_key\x18\xd8\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\nforeignKey:C\n\x0crelationship\x18\xd9\x86\x03 \x01(\x08\x12\x1d.google.protobuf.FieldOptionsR\x0crelationship:F\n\x0eback_populates\x18\xda\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\rbackPopulates:F\n\x0ecascade_delete\x18\xdb\x86\x03 \x01(\x08\x12\x1d.google.protobuf.FieldOptionsR\rcascadeDelete:<\n\ton_delete\x18\xdc\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x08onDelete:H\n\x0fpassive_deletes\x18\xdd\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\x0epassiveDeletes:>\n\nlink_model\x18\xde\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\tlinkModel:F\n\x0eserver_default\x18\xdf\x86\x03 \x01(\t\x12\x1d.google.protobuf.FieldOptionsR\rserverDefaultb\x06proto3',
     [
         descriptor_pb.desc(),
     ],
@@ -152,7 +143,6 @@ _DESC = file_desc(
         "passive_deletes": ext_passive_deletes,
         "link_model": ext_link_model,
         "server_default": ext_server_default,
-        "pg_uuid7": ext_pg_uuid7,
     },
 )
 

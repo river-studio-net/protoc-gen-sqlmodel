@@ -25,5 +25,4 @@ extend google.protobuf.FieldOptions {
   string passive_deletes = 50013;
   string link_model = 50014;
   string server_default = 50015;
-  string pg_uuid7 = 50016;  // special plugin feature to set up a uuid7 column
 }
