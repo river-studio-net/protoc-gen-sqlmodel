@@ -19,7 +19,7 @@ message ImportedRecord {
   repeated example.models.Tag source_tags = 6;
 
   map<string, string> import_metadata = 7 [
-    (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
   oneof result {

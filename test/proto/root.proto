@@ -21,7 +21,7 @@ message ProcessingBatch {
   BatchStatus status = 6;
 
   map<string, string> options = 7 [
-    (example.sqlmodel.sqlmodel_type) = "sqlalchemy.JSON"
+    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
   oneof outcome {

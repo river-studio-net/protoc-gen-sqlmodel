@@ -4,3 +4,8 @@ inputs:
 plugins:
   - local: protoc-gen-sqlmodel
     out: test/gen
+# inputs:
+#   - directory: src/protoc_gen_sqlmodel/proto
+# plugins:
+#   - local: protoc-gen-py
+#     out: src/protoc_gen_sqlmodel/proto

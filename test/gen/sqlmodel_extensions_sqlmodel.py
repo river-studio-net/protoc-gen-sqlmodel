@@ -11,6 +11,18 @@ from typing import Final
 from protobuf import Extension
 from protobuf.wkt import FieldOptions, MessageOptions
 
-
 ext_table: Final[Extension[MessageOptions, bool]] = Extension()
-ext_sqlmodel_type: Final[Extension[FieldOptions, str]] = Extension()
+ext_sa_type: Final[Extension[FieldOptions, str]] = Extension()
+ext_primary_key: Final[Extension[FieldOptions, bool]] = Extension()
+ext_sqlmodel_default: Final[Extension[FieldOptions, str]] = Extension()
+ext_sqlmodel_default_factory: Final[Extension[FieldOptions, str]] = Extension()
+ext_py_default: Final[Extension[FieldOptions, str]] = Extension()
+ext_index: Final[Extension[FieldOptions, bool]] = Extension()
+ext_foreign_key: Final[Extension[FieldOptions, str]] = Extension()
+ext_relationship: Final[Extension[FieldOptions, bool]] = Extension()
+ext_back_populates: Final[Extension[FieldOptions, str]] = Extension()
+ext_cascade_delete: Final[Extension[FieldOptions, bool]] = Extension()
+ext_on_delete: Final[Extension[FieldOptions, str]] = Extension()
+ext_passive_deletes: Final[Extension[FieldOptions, str]] = Extension()
+ext_link_model: Final[Extension[FieldOptions, str]] = Extension()
+ext_server_default: Final[Extension[FieldOptions, str]] = Extension()
