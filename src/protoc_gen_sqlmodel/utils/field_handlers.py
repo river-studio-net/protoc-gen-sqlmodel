@@ -76,11 +76,11 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
 
         for ext, field_name in FIELD_EXTENSIONS.items():
             if ext in opts:
-                field_options.append(
-                    f"{field_name}={handle_python_ref_str(str(opts[ext]))}"
-                )
+                field_options.append(f"{field_name}=")
+                field_options.append(handle_python_ref_str(str(opts[ext])))
+                field_options.append(", ")
                 options = True
-        extension_components.extend([", ".join(field_options)])
+        extension_components.extend(field_options)
     extension_components.append(")")
 
     if options:
