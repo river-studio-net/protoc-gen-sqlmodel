@@ -27,11 +27,11 @@ message Entity {
 
   // Maps default to dictionary-like types, but this field is stored as JSON.
   map<string, string> labels = 14 [
-    (example.sqlmodel.sqlmodel_type) = "sqlmodel.JSON"
+    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
   map<string, Attribute> attributes = 15 [
-    (example.sqlmodel.sqlmodel_type) = "sqlmodel.JSON"
+    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
   Metadata metadata = 16;
@@ -63,7 +63,7 @@ message Entity {
     repeated Status statuses = 3;
 
     map<string, string> annotations = 4 [
-      (example.sqlmodel.sqlmodel_type) = "sqlmodel.JSON"
+      (example.sqlmodel.sa_type) = "sqlmodel.JSON"
     ];
 
     message AuditInfo {
@@ -105,7 +105,7 @@ message ExternalIdentity {
   string subject = 2;
 
   map<string, string> claims = 3 [
-    (example.sqlmodel.sqlmodel_type) = "sqlmodel.JSON"
+    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 }
 
@@ -122,7 +122,7 @@ message HttpConfig {
   string base_url = 1;
 
   map<string, Status> headers = 2 [
-    (example.sqlmodel.sqlmodel_type) = "sqlmodel.JSON"
+    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
   uint32 timeout_seconds = 3;

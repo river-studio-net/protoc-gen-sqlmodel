@@ -10,7 +10,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Literal
 
-from sqlmodel import JSON, Field, SQLModel
+from sqlmodel import Field, JSON, SQLModel
 
 
 class Status(Enum, int):
