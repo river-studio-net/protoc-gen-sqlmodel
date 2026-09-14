@@ -20,6 +20,7 @@ from protoc_gen_sqlmodel.proto.sqlmodel_extensions_pb import (
     ext_foreign_key,
     ext_index,
     ext_link_model,
+    ext_nullable,
     ext_on_delete,
     ext_passive_deletes,
     ext_primary_key,
@@ -51,9 +52,9 @@ FIELD_EXTENSIONS = {
     ext_primary_key: "primary_key",
     ext_py_default: "py_default",
     ext_sa_type: "sa_type",
-    ext_server_default: "server_default",
     ext_sqlmodel_default: "sqlmodel_default",
     ext_sqlmodel_default_factory: "sqlmodel_default_factory",
+    ext_nullable: "nullable",
 }
 
 
@@ -73,6 +74,12 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
         if default_value:
             field_options.append(f"default={default_value}")
             options = True
+
+        if ext_server_default in opts:
+            server_default = opts[ext_server_default]
+            field_options.append('sa_column_kwargs={"server_default": text("')
+            field_options.append(server_default)
+            field_options.append('")}, ')
 
         for ext, field_name in FIELD_EXTENSIONS.items():
             if ext in opts:
@@ -96,7 +103,7 @@ def handle_leaf_field(desc: DescField, f: File):
 
     match desc.value:
         case DescFieldValueScalar(scalar, default_value, _):
-            print_components.append(get_python_scalar_type(scalar))
+            print_components.append(get_python_scalar_type(scalar, desc))
             print_components.append(field_presence)
             if default_value or field_presence:
                 field_default = default_value

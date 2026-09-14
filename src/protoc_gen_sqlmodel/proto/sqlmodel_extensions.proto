@@ -25,4 +25,5 @@ extend google.protobuf.FieldOptions {
   string passive_deletes = 50013;
   string link_model = 50014;
   string server_default = 50015;
+  bool nullable = 50016;
 }

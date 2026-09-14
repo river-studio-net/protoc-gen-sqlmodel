@@ -11,6 +11,7 @@ from typing import Final
 from protobuf import Extension
 from protobuf.wkt import FieldOptions, MessageOptions
 
+
 ext_table: Final[Extension[MessageOptions, bool]] = Extension()
 ext_sa_type: Final[Extension[FieldOptions, str]] = Extension()
 ext_primary_key: Final[Extension[FieldOptions, bool]] = Extension()
