@@ -4,4 +4,4 @@ from .plugin import generate
 
 
 def main():
-    run("protoc-gen-sqlmodel", "0.1.0", generate)
+    run("protoc-gen-sqlmodel", "0.4.1", generate)
