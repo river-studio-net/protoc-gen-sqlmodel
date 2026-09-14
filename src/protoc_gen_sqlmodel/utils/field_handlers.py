@@ -27,6 +27,7 @@ from protoc_gen_sqlmodel.proto.sqlmodel_extensions_pb import (
     ext_on_delete,
     ext_passive_deletes,
     ext_pguuid7,
+    ext_pguuid7_foreign_key,
     ext_primary_key,
     ext_py_default,
     ext_relationship,
@@ -65,14 +66,12 @@ FIELD_EXTENSIONS_PY_REFS = {
 }
 
 
-def handle_field_extensions(desc: DescField, default_value: Any | None):
+def handle_field_extensions(desc: DescField, default_value: Any | None) -> list[Any]:
     extension_components = []
-    options = False
 
     if opts := desc.proto.options:
         if ext_relationship in opts:
             extension_components.append(RELATIONSHIP)
-            options = True
         else:
             extension_components.append(FIELD)
 
@@ -81,7 +80,6 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
         field_options = []
         if default_value:
             field_options.append(f"default={default_value}")
-            options = True
 
         if ext_server_default in opts:
             server_default = opts[ext_server_default]
@@ -94,7 +92,6 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
                     '")}',
                 ]
             )
-            options = True
 
         if ext_pguuid7 in opts:
             field_options.append(
@@ -112,7 +109,21 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
                     ")",
                 ]
             )
-            options = True
+
+        if ext_pguuid7_foreign_key in opts:
+            field_options.append(
+                [
+                    "sa_column=",
+                    Module("sqlalchemy").ident("Column"),
+                    "(",
+                    Module("sqlalchemy.dialects.postgresql").ident("UUID"),
+                    "(as_uuid=True), ",
+                    "primary_key=True, ",
+                    "nullable=False, ",
+                    f'foreign_key="{opts[ext_pguuid7_foreign_key]}"',
+                    ")",
+                ]
+            )
 
         for ext, field_name in FIELD_EXTENSIONS_PY_REFS.items():
             if ext in opts:
@@ -122,7 +133,6 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
                     [f"{field_name}=", handle_python_ref_str(opt, desc.parent.file)]
                 )
                 field_options.append(components)
-                options = True
 
         for ext, field_name in FIELD_EXTENSIONS.items():
             if ext in opts:
@@ -144,9 +154,7 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
         extension_components.extend(collapse(intersperse(", ", field_options)))
     extension_components.append(")")
 
-    if options:
-        return extension_components
-    return []
+    return extension_components
 
 
 def handle_leaf_field(desc: DescField, f: File):

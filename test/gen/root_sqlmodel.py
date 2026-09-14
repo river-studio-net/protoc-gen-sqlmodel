@@ -24,29 +24,29 @@ class BatchStatus(Enum, int):
     FAILED = 4
 
 class ProcessingBatch(SQLModel, table=True):
-    batch_id: str
-    root_entity: Entity | None 
-    records: list[ImportedRecord]
-    started_at: datetime | None 
-    completed_at: datetime | None 
-    status: BatchStatus
+    batch_id: str = )
+    root_entity: Entity | None  = )
+    records: list[ImportedRecord] = )
+    started_at: datetime | None  = )
+    completed_at: datetime | None  = )
+    status: BatchStatus = )
     options: dict[str, str] = Field(sa_type=JSON)
-    success: BatchSuccess | None 
-    failure: BatchFailure | None 
+    success: BatchSuccess | None  = )
+    failure: BatchFailure | None  = )
     # oneof outcome
     which_outcome: Literal['success', 'failure']
-    success: BatchSuccess | None 
-    failure: BatchFailure | None 
+    success: BatchSuccess | None  = )
+    failure: BatchFailure | None  = )
 
 
 
 class BatchSuccess(SQLModel):
-    processed_count: int
-    skipped_count: int
-    warnings: list[str]
+    processed_count: int = )
+    skipped_count: int = )
+    warnings: list[str] = )
 
 
 class BatchFailure(SQLModel):
-    error_code: str
-    error_message: str
-    failed_import_ids: list[str]
+    error_code: str = )
+    error_message: str = )
+    failed_import_ids: list[str] = )

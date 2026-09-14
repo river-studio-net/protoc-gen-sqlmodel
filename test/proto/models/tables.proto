@@ -1,138 +1,162 @@
 syntax = "proto3";
 
-package parley.tables;
+package tables;
 
 import "sqlmodel_extensions.proto";
 
 
+message UsersCommunesLink {
+  option (sqlmodel.table) = true;
+
+  string user_id = 1 [
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7_foreign_key) = "user.id"
+  ];
+  string commune_id = 2 [
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7_foreign_key) = "commune.id"
+  ];
+}
+
 message User {
-  option (example.sqlmodel.table) = true;
+  option (sqlmodel.table) = true;
 
   string id = 1 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.pguuid7) = true
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7) = true
 
   ];
   // contact details, other socials, bio, etc.
   map<string, string> user_details = 3 [
-    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
+    (sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
   // message layer security deatils for e2ee
   map<string, string> mls_details = 4 [
-    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
+    (sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
   
   repeated Channel channels = 5 [
-    (example.sqlmodel.relationship) = true,
-    (example.sqlmodel.back_populates) = "users",
-    (example.sqlmodel.link_model) = "UsersCommunesLink"
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "users",
+    (sqlmodel.link_model) = "UsersCommunesLink"
+  ];
+}
+
+message Message {
+  option (sqlmodel.table) = true;
+
+  string id = 1 [
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7) = true
+  ];
+
+  string text = 2;
+
+  optional string owner_id = 3 [
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7_foreign_key) = "user.id"
+  ];
+  optional User owner = 4 [
+    (sqlmodel.relationship) = true
+  ];
+
+  optional string channel_id = 5 [
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7_foreign_key) = "channel.id"
+  ];
+  optional Channel channel = 6 [
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "messages"
   ];
 }
 
 message Channel {
-  option (example.sqlmodel.table) = true;
+  option (sqlmodel.table) = true;
 
   string id = 1 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.pguuid7) = true
-
-
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7) = true
   ];
   
   // commune is many to one relationship
   optional string commune_id = 3 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.foreign_key) = "commune.id"
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7_foreign_key) = "commune.id"
   ];
   optional Commune commune = 4 [
-    (example.sqlmodel.relationship) = true,
-    (example.sqlmodel.back_populates) = "channels"
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "channels"
   ];
 
   // category is many to one relationship
   optional string category_id = 5 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.foreign_key) = "category.id"
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7_foreign_key) = "category.id"
   ];
   optional Category category = 6 [
-    (example.sqlmodel.relationship) = true,
-    (example.sqlmodel.back_populates) = "categories"
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "categories"
   ];
 
   // message layer security deatils for e2ee
   map<string, string> mls_details = 7 [
-    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
+    (sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
-}
-
-message UsersCommunesLink {
-  option (example.sqlmodel.table) = true;
-
-  string user_id = 1 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.foreign_key) = "user.id",
-    (example.sqlmodel.primary_key) = true
-  ];
-  string commune_id = 2 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.foreign_key) = "commune.id",
-    (example.sqlmodel.primary_key) = true
-  ];
 }
 
 message Category {
-  option (example.sqlmodel.table) = true;
+  option (sqlmodel.table) = true;
 
   string id = 1 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.pguuid7) = true
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7) = true
   ];
   
   map<string, string> category_details = 3 [
-    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
+    (sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
   repeated Channel channels = 4 [
-    (example.sqlmodel.relationship) = true,
-    (example.sqlmodel.back_populates) = "category"
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "category"
   ];
   // commune is many to one relationship
   optional string commune_id = 5 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.foreign_key) = "commune.id"
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7_foreign_key) = "commune.id"
   ];
   optional Commune commune = 6 [
-    (example.sqlmodel.relationship) = true,
-    (example.sqlmodel.back_populates) = "categories"
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "categories"
   ];
 }
 
 message Commune {
-  option (example.sqlmodel.table) = true;
+  option (sqlmodel.table) = true;
 
   string id = 1 [
-    (example.sqlmodel.default) = "None",
-    (example.sqlmodel.pguuid7) = true
+    (sqlmodel.default) = "None",
+    (sqlmodel.pguuid7) = true
 
   ];
   
   map<string, string> commune_details = 3 [
-    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
+    (sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
   repeated Channel channels = 4 [
-    (example.sqlmodel.relationship) = true,
-    (example.sqlmodel.back_populates) = "commune"
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "commune"
   ];
   repeated Category categories = 5 [
-    (example.sqlmodel.relationship) = true,
-    (example.sqlmodel.back_populates) = "commune"
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "commune"
   ];
   // users is many to many relationship
   repeated User users = 6 [
-    (example.sqlmodel.relationship) = true,
-    (example.sqlmodel.back_populates) = "communes",
-    (example.sqlmodel.link_model) = "UsersCommunesLink"
+    (sqlmodel.relationship) = true,
+    (sqlmodel.back_populates) = "communes",
+    (sqlmodel.link_model) = "UsersCommunesLink"
   ];
 }

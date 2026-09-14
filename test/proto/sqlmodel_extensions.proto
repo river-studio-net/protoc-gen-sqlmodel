@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package example.sqlmodel;
+package sqlmodel;
 
 import "google/protobuf/descriptor.proto";
 
@@ -27,4 +27,5 @@ extend google.protobuf.FieldOptions {
   string server_default = 50015;
   bool nullable = 50016;
   bool pguuid7 = 50017;
+  string pguuid7_foreign_key = 50018;
 }

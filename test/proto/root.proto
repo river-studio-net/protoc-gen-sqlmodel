@@ -8,7 +8,7 @@ import "sqlmodel_extensions.proto";
 import "google/protobuf/timestamp.proto";
 
 message ProcessingBatch {
-  option (example.sqlmodel.table) = true;
+  option (sqlmodel.table) = true;
 
   string batch_id = 1;
 
@@ -21,7 +21,7 @@ message ProcessingBatch {
   BatchStatus status = 6;
 
   map<string, string> options = 7 [
-    (example.sqlmodel.sa_type) = "sqlmodel.JSON"
+    (sqlmodel.sa_type) = "sqlmodel.JSON"
   ];
 
   oneof outcome {

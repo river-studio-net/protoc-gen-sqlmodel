@@ -22,29 +22,29 @@ class ImportStatus(Enum, int):
     FAILED = 3
 
 class ImportedRecord(SQLModel, table=True):
-    import_id: str
-    source_file: str
-    entity: Entity | None 
-    imported_at: datetime | None 
-    status: ImportStatus
-    source_tags: list[Tag]
+    import_id: str = )
+    source_file: str = )
+    entity: Entity | None  = )
+    imported_at: datetime | None  = )
+    status: ImportStatus = )
+    source_tags: list[Tag] = )
     import_metadata: dict[str, str] = Field(sa_type=JSON)
-    success: ImportSuccess | None 
-    failure: ImportFailure | None 
+    success: ImportSuccess | None  = )
+    failure: ImportFailure | None  = )
     # oneof result
     which_result: Literal['success', 'failure']
-    success: ImportSuccess | None 
-    failure: ImportFailure | None 
+    success: ImportSuccess | None  = )
+    failure: ImportFailure | None  = )
 
 
 
 class ImportSuccess(SQLModel):
-    records_created: int
-    records_updated: int
-    warnings: list[str]
+    records_created: int = )
+    records_updated: int = )
+    warnings: list[str] = )
 
 
 class ImportFailure(SQLModel):
-    error_code: str
-    error_message: str
-    details: list[str]
+    error_code: str = )
+    error_message: str = )
+    details: list[str] = )

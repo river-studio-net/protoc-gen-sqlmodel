@@ -28,91 +28,91 @@ class Entity(SQLModel, table=True):
 
     class Metadata(SQLModel):
         class AuditInfo(SQLModel):
-            actor: str
-            timestamp: datetime | None 
-            operation: str
+            actor: str = )
+            timestamp: datetime | None  = )
+            operation: str = )
 
-        owner: str
-        source: str
-        statuses: list[Status]
+        owner: str = )
+        source: str = )
+        statuses: list[Status] = )
         annotations: dict[str, str] = Field(sa_type=JSON)
-        last_audit: AuditInfo | None 
+        last_audit: AuditInfo | None  = )
 
-    id: str
-    display_name: str
-    enabled: bool
-    priority: int
-    revision: int
-    score: float
-    raw_data: bytes
-    created_at: datetime | None 
-    updated_at: datetime | None 
-    status: Status
-    aliases: list[str]
-    tags: list[Tag]
-    children: list[Entity]
+    id: str = )
+    display_name: str = )
+    enabled: bool = )
+    priority: int = )
+    revision: int = )
+    score: float = )
+    raw_data: bytes = )
+    created_at: datetime | None  = )
+    updated_at: datetime | None  = )
+    status: Status = )
+    aliases: list[str] = )
+    tags: list[Tag] = )
+    children: list[Entity] = )
     labels: dict[str, str] = Field(sa_type=JSON)
     attributes: dict[str, Attribute] = Field(sa_type=JSON)
-    metadata: Metadata | None 
-    visibility: Visibility
-    username: str | None 
-    email: str | None 
-    external_identity: ExternalIdentity | None 
-    description: str | None 
-    database: DatabaseConfig | None 
-    http: HttpConfig | None 
+    metadata: Metadata | None  = )
+    visibility: Visibility = )
+    username: str | None  = )
+    email: str | None  = )
+    external_identity: ExternalIdentity | None  = )
+    description: str | None  = )
+    database: DatabaseConfig | None  = )
+    http: HttpConfig | None  = )
     # oneof identity
     which_identity: Literal['username', 'email', 'external_identity']
-    username: str | None 
-    email: str | None 
-    external_identity: ExternalIdentity | None 
+    username: str | None  = )
+    email: str | None  = )
+    external_identity: ExternalIdentity | None  = )
 
     # oneof configuration
     which_configuration: Literal['database', 'http']
-    database: DatabaseConfig | None 
-    http: HttpConfig | None 
+    database: DatabaseConfig | None  = )
+    http: HttpConfig | None  = )
 
 
 
 class Tag(SQLModel):
-    key: str
-    value: str
+    key: str = )
+    value: str = )
 
 
 class Attribute(SQLModel):
-    name: str
-    string_value: str | None 
-    integer_value: int | None 
-    decimal_value: float | None 
-    boolean_value: bool | None 
-    binary_value: bytes | None 
+    name: str = )
+    string_value: str | None  = )
+    integer_value: int | None  = )
+    decimal_value: float | None  = )
+    boolean_value: bool | None  = )
+    binary_value: bytes | None  = )
     # oneof value
     which_value: Literal['string_value', 'integer_value', 'decimal_value', 'boolean_value', 'binary_value']
-    string_value: str | None 
-    integer_value: int | None 
-    decimal_value: float | None 
-    boolean_value: bool | None 
-    binary_value: bytes | None 
+    string_value: str | None  = )
+    integer_value: int | None  = )
+    decimal_value: float | None  = )
+    boolean_value: bool | None  = )
+    binary_value: bytes | None  = )
 
 
 
 class ExternalIdentity(SQLModel):
-    provider: str
-    subject: str
+    provider: str = )
+    subject: str = )
     claims: dict[str, str] = Field(sa_type=JSON)
 
 
 class DatabaseConfig(SQLModel):
-    host: str
-    port: int
-    database_name: str
-    username: str
-    password: str | None 
-    tls_enabled: bool
+    host: str = )
+    port: int = )
+    database_name: str = )
+    username: str = )
+    password: str | None  = )
+    tls_enabled: bool = )
 
 
 class HttpConfig(SQLModel):
-    base_url: str
+    base_url: str = )
     headers: dict[str, Status] = Field(sa_type=JSON)
-    timeout_seconds: int
-    follow_redirects: bool
+    timeout_seconds: int = )
+    follow_redirects: bool = )
