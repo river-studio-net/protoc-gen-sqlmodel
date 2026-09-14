@@ -72,6 +72,7 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
     if opts := desc.proto.options:
         if ext_relationship in opts:
             extension_components.append(RELATIONSHIP)
+            options = True
         else:
             extension_components.append(FIELD)
 
@@ -117,7 +118,9 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
             if ext in opts:
                 opt = str(opts[ext])
                 components = []
-                components.extend([f"{field_name}=", handle_python_ref_str(opt)])
+                components.extend(
+                    [f"{field_name}=", handle_python_ref_str(opt, desc.parent.file)]
+                )
                 field_options.append(components)
                 options = True
 

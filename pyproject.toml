@@ -1,6 +1,6 @@
 [project]
 name = "protoc-gen-sqlmodel"
-version = "0.4.1"
+version = "0.5.0"
 description = "protoc plugin to generate SQLModel classes"
 readme = "README.md"
 license = { file = "LICENSE" }
