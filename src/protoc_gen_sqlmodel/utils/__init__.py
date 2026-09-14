@@ -25,7 +25,7 @@ MESSAGE_OPT = Module("protobuf.wkt").ident("MessageOptions")
 def get_presence(presence: SupportedFieldPresence) -> str:
     match presence:
         case SupportedFieldPresence.EXPLICIT:
-            return " | None "
+            return " | None"
         case SupportedFieldPresence.IMPLICIT:
             return ""
         case _:

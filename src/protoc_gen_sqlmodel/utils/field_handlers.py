@@ -152,7 +152,7 @@ def handle_field_extensions(desc: DescField, default_value: Any | None) -> list[
                 field_options.append(components)
 
         extension_components.extend(collapse(intersperse(", ", field_options)))
-    extension_components.append(")")
+        extension_components.append(")")
 
     return extension_components
 
@@ -177,10 +177,10 @@ def handle_leaf_field(desc: DescField, f: File):
             if default_value or field_presence:
                 field_default = default_value
         case DescFieldValueMap(key, value):
-            print_components.append(f"dict[{get_python_scalar_type(key)}, ")
+            print_components.append(f"dict[{get_python_scalar_type(key, desc)}, ")
             match value:
                 case ScalarType():
-                    print_components.append(f"{get_python_scalar_type(value)}]")
+                    print_components.append(f"{get_python_scalar_type(value, desc)}]")
                 case DescMessage() | DescEnum():
                     print_components.extend([handle_import_desc(value), "]"])
             print_components.append(field_presence)
@@ -188,7 +188,7 @@ def handle_leaf_field(desc: DescField, f: File):
             print_components.append("list[")
             match element:
                 case ScalarType():
-                    print_components.append(f"{get_python_scalar_type(element)}]")
+                    print_components.append(f"{get_python_scalar_type(element, desc)}]")
                 case DescEnum() | DescMessage():
                     print_components.extend(
                         [
