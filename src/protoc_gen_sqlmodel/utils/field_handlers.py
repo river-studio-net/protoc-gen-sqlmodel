@@ -1,5 +1,6 @@
 from typing import Any
 
+from more_itertools import collapse, intersperse
 from protobuf import (
     DescEnum,
     DescField,
@@ -17,19 +18,20 @@ from protobuf.plugin import File, Module
 from protoc_gen_sqlmodel.proto.sqlmodel_extensions_pb import (
     ext_back_populates,
     ext_cascade_delete,
+    ext_default,
+    ext_default_factory,
     ext_foreign_key,
     ext_index,
     ext_link_model,
     ext_nullable,
     ext_on_delete,
     ext_passive_deletes,
+    ext_pguuid7,
     ext_primary_key,
     ext_py_default,
     ext_relationship,
     ext_sa_type,
     ext_server_default,
-    ext_sqlmodel_default,
-    ext_sqlmodel_default_factory,
 )
 from protoc_gen_sqlmodel.utils import (
     get_presence,
@@ -41,20 +43,25 @@ from protoc_gen_sqlmodel.utils import (
 FIELD = Module("sqlmodel").ident("Field")
 RELATIONSHIP = Module("sqlmodel").ident("Relationship")
 
+FIELD_EXTENSIONS_BOOL = {
+    ext_index: "index",
+    ext_primary_key: "primary_key",
+    ext_nullable: "nullable",
+    ext_cascade_delete: "cascade_delete",
+}
 FIELD_EXTENSIONS = {
     ext_back_populates: "back_populates",
-    ext_cascade_delete: "cascade_delete",
-    ext_foreign_key: "foreign_key",
-    ext_index: "index",
-    ext_link_model: "link_model",
-    ext_on_delete: "on_delete",
     ext_passive_deletes: "passive_deletes",
-    ext_primary_key: "primary_key",
+    ext_foreign_key: "foreign_key",
+    ext_on_delete: "on_delete",
+}
+
+FIELD_EXTENSIONS_PY_REFS = {
+    ext_link_model: "link_model",
     ext_py_default: "py_default",
     ext_sa_type: "sa_type",
-    ext_sqlmodel_default: "sqlmodel_default",
-    ext_sqlmodel_default_factory: "sqlmodel_default_factory",
-    ext_nullable: "nullable",
+    ext_default: "default",
+    ext_default_factory: "default_factory",
 }
 
 
@@ -77,17 +84,61 @@ def handle_field_extensions(desc: DescField, default_value: Any | None):
 
         if ext_server_default in opts:
             server_default = opts[ext_server_default]
-            field_options.append('sa_column_kwargs={"server_default": text("')
-            field_options.append(server_default)
-            field_options.append('")}, ')
+            field_options.append(
+                [
+                    'sa_column_kwargs={"server_default": ',
+                    Module("sqlalchemy").ident("text"),
+                    '("',
+                    server_default,
+                    '")}',
+                ]
+            )
+            options = True
+
+        if ext_pguuid7 in opts:
+            field_options.append(
+                [
+                    "sa_column=",
+                    Module("sqlalchemy").ident("Column"),
+                    "(",
+                    Module("sqlalchemy.dialects.postgresql").ident("UUID"),
+                    "(as_uuid=True), ",
+                    "primary_key=True, ",
+                    "nullable=False, ",
+                    "server_default=",
+                    Module("sqlalchemy").ident("text"),
+                    '("uuidv7()")',
+                    ")",
+                ]
+            )
+            options = True
+
+        for ext, field_name in FIELD_EXTENSIONS_PY_REFS.items():
+            if ext in opts:
+                opt = str(opts[ext])
+                components = []
+                components.extend([f"{field_name}=", handle_python_ref_str(opt)])
+                field_options.append(components)
+                options = True
 
         for ext, field_name in FIELD_EXTENSIONS.items():
             if ext in opts:
-                field_options.append(f"{field_name}=")
-                field_options.append(handle_python_ref_str(str(opts[ext])))
-                field_options.append(", ")
-                options = True
-        extension_components.extend(field_options)
+                opt = str(opts[ext])
+                components = []
+                components.append(f'{field_name}="')
+                components.append(opt)
+                components.append('"')
+                field_options.append(components)
+
+        for ext, field_name in FIELD_EXTENSIONS_BOOL.items():
+            if ext in opts:
+                opt = str(opts[ext])
+                components = []
+                components.append(f"{field_name}=")
+                components.append(opt)
+                field_options.append(components)
+
+        extension_components.extend(collapse(intersperse(", ", field_options)))
     extension_components.append(")")
 
     if options:

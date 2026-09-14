@@ -13,8 +13,8 @@ extend google.protobuf.MessageOptions {
 extend google.protobuf.FieldOptions {
   string sa_type = 50002;
   bool primary_key = 50003;
-  string sqlmodel_default = 50004;
-  string sqlmodel_default_factory = 50005;
+  string default = 50004;
+  string default_factory = 50005;
   string py_default = 50006;
   bool index = 50007;
   string foreign_key = 50008;
@@ -25,4 +25,6 @@ extend google.protobuf.FieldOptions {
   string passive_deletes = 50013;
   string link_model = 50014;
   string server_default = 50015;
+  bool nullable = 50016;
+  bool pguuid7 = 50017;
 }

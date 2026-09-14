@@ -28,7 +28,7 @@ class ImportedRecord(SQLModel, table=True):
     imported_at: datetime | None 
     status: ImportStatus
     source_tags: list[Tag]
-    import_metadata: dict[str, str] = Field(sa_type=JSON, )
+    import_metadata: dict[str, str] = Field(sa_type=JSON)
     success: ImportSuccess | None 
     failure: ImportFailure | None 
     # oneof result

@@ -9,7 +9,7 @@ from protobuf import (
 from protobuf._descriptors import SupportedFieldPresence
 from protobuf.plugin import File, Module
 
-from protoc_gen_sqlmodel.proto.sqlmodel_extensions_pb import ext_server_default
+from protoc_gen_sqlmodel.proto.sqlmodel_extensions_pb import ext_pguuid7
 
 ENUM = Module("enum").ident("Enum")
 FINAL = Module("typing").ident("Final")
@@ -29,10 +29,8 @@ def get_presence(presence: SupportedFieldPresence) -> str:
 
 
 def get_python_scalar_type(scalar: ScalarType, desc: DescField | None = None):
-    if desc and (opts := desc.proto.options) and ext_server_default in opts:
-        server_default = opts[ext_server_default]
-        if "uuid" in server_default:
-            return Module("uuid").ident("uuid7")
+    if desc and (opts := desc.proto.options) and ext_pguuid7 in opts:
+        return Module("uuid").ident("UUID")
 
     match scalar:
         case ScalarType.BOOL:
