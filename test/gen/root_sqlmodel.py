@@ -30,7 +30,7 @@ class ProcessingBatch(SQLModel, table=True):
     started_at: datetime | None 
     completed_at: datetime | None 
     status: BatchStatus
-    options: dict[str, str] = Field(sa_type=JSON, )
+    options: dict[str, str] = Field(sa_type=JSON)
     success: BatchSuccess | None 
     failure: BatchFailure | None 
     # oneof outcome
